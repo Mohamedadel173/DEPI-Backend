@@ -10,6 +10,6 @@ const rawParser =
   process.env.STRIPE_TEST_MODE === "true"
     ? express.json()
     : express.raw({ type: "application/json" });
-router.post("/webhook", verifyToken, rawParser, stripeWebhook);
+router.post("/webhook", rawParser, stripeWebhook);
 
 export default router;
