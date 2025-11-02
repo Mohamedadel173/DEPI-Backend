@@ -16,6 +16,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// For testing
+app.get('/', (req, res) => {
+  res.status(200).send('API is running successfully!'); 
+});
+
 // Routes
 // register & verify & login & forgot password & reset password
 app.use("/auth", authRoutes);
