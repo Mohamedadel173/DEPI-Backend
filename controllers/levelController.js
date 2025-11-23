@@ -1,4 +1,5 @@
 import Level from "../models/levelModel.js";
+import User from "../models/userModel.js";
 
 export const createLevel = async (req, res) => {
   try {
@@ -32,5 +33,26 @@ export const getLevelDetails = async (req, res) => {
     res.status(200).json({ level });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const getUserPurchasedLevels = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).populate("purchasedLevels", "title description price");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Purchased levels fetched successfully",
+      purchasedLevels: user.purchasedLevels,
+    });
+  } catch (error) {
+    console.error("Error fetching purchased levels:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

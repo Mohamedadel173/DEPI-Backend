@@ -1,11 +1,13 @@
 import express from "express";
-import { createLevel, getAllLevels, getLevelDetails } from "../controllers/levelController.js";
+import { createLevel, getAllLevels, getLevelDetails, getUserPurchasedLevels} from "../controllers/levelController.js";
 import { verifyToken, verifyPurchase, verifyAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/create", verifyToken, verifyAdmin, createLevel);
 router.get("/levels", verifyToken, getAllLevels);
+router.get("/purchased-levels", verifyToken, getUserPurchasedLevels);
+// canceled
+router.post("/create", verifyToken, verifyAdmin, createLevel);
 router.get("/:levelId", verifyToken, verifyPurchase, getLevelDetails);
 
 

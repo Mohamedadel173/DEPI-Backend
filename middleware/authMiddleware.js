@@ -22,10 +22,7 @@ export const verifyPurchase = async (req, res, next) => {
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });
-    if (user.role === "admin") {
-      console.log("Admin access granted for all content");
-      return next();
-    }
+    if (user.role === "admin") return next();
 
     const purchase = await Purchase.findOne({ userId, levelId, paymentStatus: "paid" });
 

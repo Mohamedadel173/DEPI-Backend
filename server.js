@@ -1,20 +1,24 @@
 import express from "express";
+const app = express(); // create express app
+
 import cors from "cors";
+app.use(cors());
+
 import connectDB from "./config/db.js";
-import dotenv from "dotenv"; //? load environment variables
-dotenv.config(); //? Load env variables
+connectDB(); // connect to database
+
+import dotenv from "dotenv";
+dotenv.config(); // load environment variables
+
 // Routes
 import authRoutes from "./routes/authRoutes.js";
 import stripeRoutes from "./routes/stripeRoutes.js";
-import levelRoutes from "./routes/levelRoutes.js";
 import purchaseRoutes from "./routes/purchaseRoutes.js";
+import levelRoutes from "./routes/levelRoutes.js";
 import unitRoutes from "./routes/unitRoutes.js";
 
-connectDB();
+app.use(express.json()); // for parsing JSON
 
-const app = express();
-app.use(cors());
-app.use(express.json());
 
 // For testing
 app.get('/', (req, res) => {
@@ -22,16 +26,12 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-// register & verify & login & forgot password & reset password
 app.use("/auth", authRoutes);
-// Add level (Admin) & get all levels
-app.use("/levels", levelRoutes);
-// create session & send webhook
 app.use("/stripe", stripeRoutes);
-// get purchases for a specific user & get all purchases (Admin)
 app.use("/purchases", purchaseRoutes);
-// for units: 
+app.use("/levels", levelRoutes);
 app.use("/units", unitRoutes);
+
 // get all users (Admin)
 import User from "./models/userModel.js";
 import { verifyToken, verifyAdmin } from "./middleware/authMiddleware.js";
@@ -43,10 +43,6 @@ app.use("/users", verifyToken, verifyAdmin, async (req, res) => {
     res.status(500).json({ message: "Error fetching users", error: err });
   }
 });
-
-
-
-
 
 // Start server
 app.listen(process.env.PORT, () => {
