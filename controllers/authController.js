@@ -90,8 +90,17 @@ export const registerUser = async (req, res) => {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, username, email, password, birthday, gender, mobile, isVerified, role } =
-      req.body;
+    const {
+      name,
+      username,
+      email,
+      password,
+      birthday,
+      gender,
+      mobile,
+      isVerified,
+      role,
+    } = req.body;
     // check if user exists by email or username
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
@@ -106,17 +115,24 @@ export const registerUser = async (req, res) => {
     }
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
+
+    if (req.body.birthday && typeof req.body.birthday === "string") {
+      const [day, month, year] = req.body.birthday.split("/");
+      // تعديل القيمة الأصلية داخل الـ body
+      req.body.birthday = new Date(`${year}-${month}-${day}`);
+    }
+
     // create new user
     const user = await User.create({
       name,
       username,
       email,
       password: hashedPassword,
-      birthday,
+      birthday: req.body.birthday,
       gender,
       mobile,
       isVerified,
-      role
+      role,
     });
 
     // OTP generation and email sending
@@ -215,7 +231,7 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// Verify 
+// Verify
 export const verifyEmail = async (req, res) => {
   const { email, otp } = req.body;
 
