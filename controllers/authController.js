@@ -102,8 +102,6 @@ export const registerUser = async (req, res) => {
       role,
     } = req.body;
     // check if user exists by email or username
-    console.log("Email User:", process.env.EMAIL_USER);
-    console.log("Email Pass:", process.env.EMAIL_PASS);
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
     });
@@ -138,7 +136,7 @@ export const registerUser = async (req, res) => {
     });
 
     // OTP generation and email sending
-    verificationOpt(email, name);
+    await verificationOpt(email, name);
 
     res
       .status(201)
