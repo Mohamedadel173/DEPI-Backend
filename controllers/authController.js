@@ -16,7 +16,7 @@ const verificationOpt = async (email, name) => {
     `
       <div style="font-family: Arial, sans-serif; max-width: 450px; margin: auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 10px; background: #fdfcff;">
         <div style="text-align: center;">
-          <img src="https://i.postimg.cc/pXKdzyTM/Main-Logo.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+          <img src="https://i.postimg.cc/15gsWG4G/logo-1.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
           <h2 style="color: #370D5F; margin-bottom: 5px;">Verify Your Account</h2>
           <hr style="width: 60px; border: 2px solid #F81088; margin: 10px auto;">
         </div>
@@ -53,7 +53,7 @@ const passwordResetOtp = async (email, name) => {
     `
       <div style="font-family: Arial, sans-serif; max-width: 450px; margin: auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 10px; background: #fdfcff;">
         <div style="text-align: center;">
-          <img src="https://i.postimg.cc/pXKdzyTM/Main-Logo.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+          <img src="https://i.postimg.cc/15gsWG4G/logo-1.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
           <h2 style="color: #370D5F; margin-bottom: 5px;">Reset Your Password</h2>
           <hr style="width: 60px; border: 2px solid #F81088; margin: 10px auto;">
         </div>
@@ -102,6 +102,8 @@ export const registerUser = async (req, res) => {
       role,
     } = req.body;
     // check if user exists by email or username
+    console.log("Email User:", process.env.EMAIL_USER);
+    console.log("Email Pass:", process.env.EMAIL_PASS);
     const existingUser = await User.findOne({
       $or: [{ email }, { username }],
     });
