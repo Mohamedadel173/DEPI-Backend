@@ -118,7 +118,6 @@ export const registerUser = async (req, res) => {
 
     if (req.body.birthday && typeof req.body.birthday === "string") {
       const [day, month, year] = req.body.birthday.split("/");
-      // تعديل القيمة الأصلية داخل الـ body
       req.body.birthday = new Date(`${year}-${month}-${day}`);
     }
 

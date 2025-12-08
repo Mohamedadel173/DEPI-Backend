@@ -35,8 +35,8 @@ export const createCheckoutSession = async (req, res) => {
         },
       ],
       metadata: { userId, levelId },
-      success_url: "http://localhost:3000/payment-success",
-      cancel_url: "http://localhost:3000/payment-cancelled",
+      success_url: "https://payment-pages-status.vercel.app/payment-success",
+      cancel_url: "https://payment-pages-status.vercel.app/payment-cancelled",
     });
 
     res.status(200).json({ url: session.url });
