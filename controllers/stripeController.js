@@ -17,7 +17,7 @@ export const createCheckoutSession = async (req, res) => {
   }
   try {
     // const { userId, levelId, levelTitle, price } = req.body;
-    if (!userId || !levelId || !price || !levelTitle) {
+    if (!userId || !levelId || !price) {
       return res.status(400).json({ message: "Missing required fields" });
     }
     // 
@@ -35,7 +35,7 @@ export const createCheckoutSession = async (req, res) => {
         },
       ],
       metadata: { userId, levelId },
-      success_url: "https://payment-pages-status.vercel.app/payment-success",
+      success_url: "https://payment-pages-status.vercel.app",
       cancel_url: "https://payment-pages-status.vercel.app/payment-cancelled",
     });
 
@@ -60,7 +60,6 @@ export const stripeWebhook = async (req, res) => {
         process.env.STRIPE_WEBHOOK_SECRET
       );
     }
-    console.log("Received event:", event.type);
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
